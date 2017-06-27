@@ -29,9 +29,13 @@ abstract class Model
      */
     public static function findById($id)
     {
-        $sql = 'SELECT * FROM ' . static::$table. ' WHERE id=:id';
+        $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
         $db = Db::instance();
-        return $db->query($sql, [':id' => $id], static::class)[0];
+        $data = $db->query($sql, [':id' => $id], static::class);
+        if (empty($data)) {
+            return null;
+        }
+        return $data[0];
     }
 
     /**
@@ -42,7 +46,7 @@ abstract class Model
         $cols = [];
         $binds = [];
         $vals = [];
-        foreach ($this->data as $key => $val){
+        foreach ($this->data as $key => $val) {
             if ('id' == $key) {
                 continue;
             }
@@ -51,7 +55,7 @@ abstract class Model
             $vals[':' . $key] = $val;
         }
 
-        $sql = 'INSERT INTO  ' . static::$table. '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $binds) . ')';
+        $sql = 'INSERT INTO  ' . static::$table . '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $binds) . ')';
         $db = Db::instance();
         $db->execute($sql, $vals);
         $this->id = $db->lastInsertId();
@@ -106,6 +110,7 @@ abstract class Model
         $arg = [':id' => $this->id];
         return $db->execute($sql, $arg);
     }
+
 
 
 }

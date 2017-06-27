@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Db;
 use App\Model;
+use App\MultiException;
 
 /**
  * Class Product
@@ -46,5 +47,19 @@ class Product
         }
 
         return isset($this->data[$key]);
+    }
+
+    protected function validate_title($val)
+    {
+        $err = new MultiException();
+        if(strlen($val)<5){
+            $err->add(new \Exception('Слишком коротокое наименование товара'));
+        }
+        if(false !== strpos($val, '!')){
+            $err->add(new \Exception('Недопустимый символ в наименовании товара'));
+        }
+        if(!$err->empty()){
+            throw $err;
+        }
     }
 }

@@ -14,26 +14,18 @@
         ?>
     </header>
     <div class="block1">
-            <?php foreach ($this->products as $product) : ?>
+            <?php foreach ($this->news as $article) : ?>
                 <section>
                     <h2>
-                        <a class="link" href="/Products/One/?id=<?php echo $product->id; ?>">
-                            <?php echo $product->title ?>
+                        <a class="link" href="/News/One/?id=<?php echo $article->id; ?>">
+                            <?php echo $article->title ?>
                         </a>
                     </h2>
-                    <article>Описание: <?php echo $product->describtion ?></article>
-                    <p style="color: red">Стоимость: <?php echo $product->price ?></p>
-
+                    <article>Описание: <?php echo $article->describtion ?></article>
                     <p style="color: green"><?php
-                        if (!empty($product->cook_id)) {
-                            echo 'Изготовитель: ' . $product->cook->cook;
-
+                        if (!empty($article->author_id)) {
+                            echo 'Автор: ' . $article->author->author;
                         } ?></p>
-                    <p style="color: orangered"><?php
-                        if (!empty($product->add_id)) {
-                            echo 'Добавки: ' . $product->add->add;
-                        } ?>
-                    </p>
                     <hr>
                 </section>
             <?php endforeach; ?>

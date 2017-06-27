@@ -1,15 +1,30 @@
 <?php
+use App\Exceptions\NotFoundException;
+use App\Exceptions\ProductNotFoundException;
+use App\Exceptions\CategoryNotFoundException;
+use App\Exceptions\DbException;
 
-use App\Models\User;
+include __DIR__ . '/../protected/autoload.php';
 
-require __DIR__ . '/../protected/autoload.php';
+$uri = $_SERVER['REQUEST_URI'];
+$parts = explode('/' , $uri);
+
+if (!empty($parts[1])) {
+    $controllerName = $parts[1];
+} else {
+    $controllerName = 'Products';
+}
+
+$controllerClass = '\\App\\Controllers\\' . $controllerName;
+$actionName = $parts[2] ?: 'Default';
 
 
-$user = new User();
-$user->email = 'test@test.ru';
-$user->password = '1234';
+try{
+    $product = new \App\Models\Product();
+    $product->title = '!';
 
-$user->foo();
-$user->save();
+} catch (\App\MultiException $e){
+    echo var_dump($e);
+}
 
-var_dump($user);
+
