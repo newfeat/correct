@@ -1,13 +1,29 @@
 <?php
+namespace App\Models;
 
-//require __DIR__ . '/../Model.php';
+use App\Model;
 
+/**
+ * @property string $email
+ * @property string $password
+ */
 class User
     extends Model
 {
     protected static $table = 'users';
 
-    public $email;
-    public $password;
+    protected function validate_email($value)
+    {
+        if (false == strpos($value, '@')){
+            die('Неверный email');
+        }
+    }
 
+    /**
+     * @deprecated
+     */
+    public function foo()
+    {
+
+    }
 }
