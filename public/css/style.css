@@ -1,26 +1,19 @@
 body {
     font-family: "Segoe UI", PT sans, arial;
-    background-color: #fafafa;
 }
 
 
 .container {
-    width: 1000px;
+    width: 1100px;
     margin: 0 auto;
 }
 
 
-section {
+.container1 {
     width: 90%;
     margin: 0 auto;
 }
 
-article {
-    font-size: 13px;
-    text-align: justify;
-    line-height: 1.4;
-    color: #235588;
-}
 
 h1 {
     font-size: 21px;
@@ -47,14 +40,6 @@ p {
     text-align: justify;
     line-height: 1.4;
     color: dimgrey;
-}
-
-input {
-    border: none;
-}
-
-textarea {
-    border: none;
 }
 
 .link {
@@ -102,7 +87,6 @@ textarea {
 .block1 {
     float: left;
     width: 100%;
-    background-color: white;
 }
 
 .block2-3 {
@@ -113,18 +97,4 @@ textarea {
 .block3-4 {
     float: left;
     width: 75%;
-}
-
-.button {
-    width: 100%;
-    height: 30px;
-    color: white;
-    background-color: #235588;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.button:hover {
-    color: white;
-    background-color: #6395b2;
 }

@@ -1,41 +1,30 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Maffins &ndash; детские торты из натуральных ингредиентов</title>
+    <title>Новости</title>
     <link rel="stylesheet" type="text/css" href="/../css/style.css">
 </head>
 <body>
-<div class="container">
-    <header>
-        <?php
-        $view = new \App\View();
-        $view->display(__DIR__ . '/header.php');
-        ?>
-    </header>
+<header class="container">
+</header>
+<article class="container">
     <div class="block1">
-            <?php foreach ($this->news as $article) : ?>
-                <section>
-                    <h2>
-                        <a class="link" href="/News/One/?id=<?php echo $article->id; ?>">
-                            <?php echo $article->title ?>
-                        </a>
-                    </h2>
-                    <article>Описание: <?php echo $article->describtion ?></article>
-                    <p style="color: green"><?php
-                        if (!empty($article->author_id)) {
-                            echo 'Автор: ' . $article->author->author;
-                        } ?></p>
-                    <hr>
-                </section>
-            <?php endforeach; ?>
+        <div class="container1">
+            <?php
+            foreach ($news as $article) { ?>
+                <div>
+                    <ul style="font-size: 13px; line-height: 1.7;">
+                        <li>
+                            <a class="link" href="/article.php?id=<?php echo $article->id; ?>"><?php echo $article->title; ?><br><?php echo $article->lead; ?></a>
+                        </li>
+                    </ul>
+                </div>
+            <?php } ?>
+        </div>
     </div>
-    <footer>
-    <?php
-    $view = new \App\View();
-    $view->display(__DIR__ . '/footer.php');
-    ?>
-    </footer>
-</div>
+</article>
+<footer class="container">
+</footer>
 </body>
 </html>
