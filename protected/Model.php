@@ -1,26 +1,111 @@
 <?php
 
+namespace App;
+
+/**
+ * Class Model
+ * @package App
+ */
 abstract class Model
+
 {
     protected static $table = null;
 
-    public $id;
+    use MagicTrait;
 
+    /**
+     * @return array|bool
+     */
     public static function findAll()
     {
         $sql = 'SELECT * FROM ' . static::$table;
-        $db = new Db();
-        return $db->query($sql, static::class);
+        $db = Db::instance();
+        return $db->query($sql, [], static::class);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public static function findById($id)
     {
         $sql = 'SELECT * FROM ' . static::$table. ' WHERE id=:id';
-        $db = new Db();
-        $data = $db->query($sql, static::class, [':id' => $id]);
-        if (empty($data)){
-            return false;
-        }
-        return array_shift($data);
+        $db = Db::instance();
+        return $db->query($sql, [':id' => $id], static::class)[0];
     }
+
+    /**
+     *
+     */
+    public function insert()
+    {
+        $cols = [];
+        $binds = [];
+        $vals = [];
+        foreach ($this->data as $key => $val){
+            if ('id' == $key) {
+                continue;
+            }
+            $cols[] = $key;
+            $binds[] = ':' . $key;
+            $vals[':' . $key] = $val;
+        }
+
+        $sql = 'INSERT INTO  ' . static::$table. '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $binds) . ')';
+        $db = Db::instance();
+        $db->execute($sql, $vals);
+        $this->id = $db->lastInsertId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function update()
+    {
+        $cols = [];
+        $vals = [];
+        foreach ($this->data as $key => $val) {
+            if ('id' !== $key) {
+                $cols[] = $key . '=:' . $key;
+            }
+            $vals[':' . $key] = $val;
+        }
+        $db = Db::instance();
+        $sql = 'UPDATE ' . static::$table . ' SET ' . implode(', ', $cols) . ' WHERE id=:id';
+        return $db->execute($sql, $vals);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return empty($this->id);
+    }
+
+    /**
+     * @return bool|void
+     */
+    public function save()
+    {
+        if ($this->isNew()) {
+            return $this->insert();
+        } else {
+            return $this->update();
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete()
+    {
+        $sql = 'DELETE FROM ' . static::$table . ' WHERE id=:id';
+        $db = Db::instance();
+        $arg = [':id' => $this->id];
+        return $db->execute($sql, $arg);
+    }
+
+
 }

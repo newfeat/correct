@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../protected/Db.php';
-require __DIR__ . '/../protected/Models/Article.php';
+require __DIR__ . '/../protected/autoload.php';
+$data = \App\Models\Article::findAll();
+$view = new \App\View();
 
-
-$news = Article::findLatest(3);
-include __DIR__ . '/../templates/news.php';
+$view->news = $data;
+$view->display(__DIR__ . '/../templates/index.php');
